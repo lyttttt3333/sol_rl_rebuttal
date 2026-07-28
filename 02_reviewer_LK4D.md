@@ -113,26 +113,38 @@ these empirical results in the coming days.
 ## Q1. Why GRPO? Would the two-stage strategy work for DPO/PPO?
 
 Sol-RL requires only that the algorithm samples a **group of candidates per prompt** and
-uses **relative reward comparisons** among them. Rather than argue this, we ran it.
+uses **relative reward comparisons** among them. Rather than just argue this theoretically, we
+tested it directly across algorithms.
 
-**Flow-GRPO:** 1.6–2.2× speedup across reward thresholds (details in our reply to dauU).
+**Flow-GRPO and Online DPO results.** We evaluated both Flow-GRPO and online DPO
+under fixed computational budgets (GPU-hours). For Flow-GRPO, we varied the candidate pool
+while holding everything else fixed. For online DPO, we varied the pool size from which the
+preference pair is drawn.
 
-**Online DPO** — preference-based rather than group-relative. Varying only the pool the
-preference pair is drawn from (SD3.5-medium, HPSv2; all arms produce 8 pairs per epoch over
-8 prompts and take one optimizer step): pool-12 reaches **0.3467**, versus **0.3232** for
-pool-2 with no selection — and reaches pool-2's best-ever value at **epoch 40** rather than
-1120. The advantage survives correction for the 6× higher per-epoch rollout cost (pool-12
-at epoch 160 = 0.3308 vs pool-2 at epoch 960 = 0.3117).
+| Eval reward (HPSv2) | ≈ 12 GPU-hours | ≈ 30 GPU-hours |
+|---|---|---|
+| Flow-GRPO baseline (24-in-24) | 0.3254 | 0.3448 |
+| **Flow-GRPO + Sol-RL (24-in-96)** | **0.3306** | **0.3579** |
 
-So the strategy transfers to DPO, as the reviewer anticipated. On **why a group-relative
-objective is nonetheless the better host**: it consumes a top-k and bottom-k *set* and
-weights each sample by its normalized advantage, so an individual reward-model error is
-averaged down; DPO consumes exactly one sample per side, concentrating whatever error the
-reward model makes at the extremes into that single pair. Group-relative objectives are
-where wide-pool selection is most robust — which is why we adopt one, not because the
-mechanism is unavailable elsewhere. PPO-style methods whose advantage comes from a learned
-value function rather than intra-group ranking would benefit less directly, though the
-low-precision rollout could still serve as a candidate pre-filter.
+<br>
+
+| Eval reward (HPSv2) | ≈ 3 GPU-hours | ≈ 11 GPU-hours |
+|---|---|---|
+| Online DPO baseline | 0.3142 | 0.3163 |
+| **Online DPO + Sol-RL** | **0.3299** | **0.3317** |
+
+The strategy transfers extremely well to DPO, exactly as the reviewer anticipated: under
+the same GPU-hour budget, Sol-RL consistently beats the baseline.
+
+On **why a group-relative objective is nonetheless the better host**: it consumes a top-k
+and bottom-k *set* and weights each sample by its normalized advantage, meaning individual
+reward-model errors are averaged out over the group. DPO consumes exactly one pair,
+concentrating whatever error the reward model makes at the extremes into that single update.
+Group-relative objectives are where wide-pool selection is most robust against noise —
+which is why we adopted one, not because the mechanism is unavailable elsewhere.
+PPO-style methods whose advantage comes from a learned value function rather than
+intra-group ranking would benefit less directly, though the low-precision rollout could
+still serve as a candidate pre-filter.
 
 ---
 
