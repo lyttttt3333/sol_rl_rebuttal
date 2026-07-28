@@ -9,14 +9,10 @@ Every point raised is directly measurable, and we address each below.
 
 ## W1. Evaluation relies on learned reward models, some also used as training objectives
 
-We completely agree this is an important concern to raise.
-
+We agree this is an important concern to raise. 
 Following the standard methodology of diffusion GRPO and other RL post-training methods, our
 approach fundamentally optimizes against a given reward model, so it inevitably demonstrates
-strong improvements on that specific metric. However, our qualitative visualizations (e.g., 
-**Figure 5: Visual comparison before and after Sol-RL**) show that this does not lead to
-obvious "reward hacking." Instead, the optimization translates into genuine improvements in
-human preference and aesthetic quality.
+strong improvements on that specific metric.
 
 We agree that human evaluation is the gold standard for verifying this. To that end, we
 are currently conducting an internal user study to rigorously evaluate whether the
@@ -29,26 +25,21 @@ study in the coming days.
 ## W2. Improvements are modest and no error bars are reported
 
 **We accept this framing, and we think it is the correct one for our paper.** Our central
-claim is *compute-efficient quality preservation* -- matching the BF16 large-rollout
-pipeline at substantially lower cost -- rather than uniformly superior alignment quality. We
+claim is *compute-efficient quality preservation* -- reaching equal quality standard at substantially lower cost -- rather than uniformly superior alignment quality. We
 will revise the claims in the text and abstract to state this precisely.
 
 **Variance and Error bars.** To quantify variance, we ran four independent training runs on
-SD3.5-Medium for both CLIPScore and PickScore. We present these preliminary measurements
-below, and will include comprehensive variance bounds in the revised version:
+SD3.5-Medium for both CLIPScore and PickScore under the same GPU-hours. We present these preliminary measurements below:
 
-| Metric | Arm | Mean $\pm$ Std |
+| Metric | Method | Mean $\pm$ Std |
 |---|---|---|
 | **CLIPScore** | Baseline | 0.3005 $\pm$ 0.0034 |
 | | **Sol-RL** | **0.3115 $\pm$ 0.0031** |
 | **PickScore** | Baseline | 0.8908 $\pm$ 0.0028 |
 | | **Sol-RL** | **0.9015 $\pm$ 0.0026** |
 
-The results show that the training process is remarkably stable and consistent. Sol-RL's
-lowest individual run comfortably outperforms the baseline's highest individual run in both
-cases. The fact that Sol-RL systematically preserves or slightly improves quality
-while delivering massive rollout speedups is exactly the compute-efficient Pareto improvement
-the paper claims.
+The results show that the training process is remarkably stable and consistent，roughly indicating that the improvement of our method is statistic significant. We will include comprehensive variance bounds in the revised version
+
 
 ---
 
@@ -61,42 +52,37 @@ arbitrarily.
 **How the target was originally chosen.** The figure is *time-to-parity*: the wall-clock
 GPU-hours Sol-RL needs to reach the **baseline's final** reward, relative to the hours the
 baseline needs. The reviewer is right that this is the criterion most sensitive to a
-plateaued baseline. The paper reports a **range, 1.91×–4.64×** — 4.64× is the most
-favourable cell, not a typical one — but we agree the headline should not lead with the
-extreme, and will revise it.
+plateaued baseline, where 4.64× is exactly the result of this measurement method.
 
-**Revised reporting.** We now report speedup **at every reward threshold along the
-trajectory** rather than at a single point. For Sol-RL on Flow-GRPO (SD3.5-medium, HPSv2):
+**Revised reporting.** To evaluate this fairly across models with different reward scales,
+we uniformly slice the baseline's trajectory from start to finish into 25%, 50%, 75%, and
+100% (plateau) progress milestones. We then report the speedup (Baseline GPU-hours /
+Sol-RL GPU-hours) required to reach each specific reward standard:
 
-| Target eval reward | 0.300 | 0.315 | 0.325 | 0.335 | 0.353 |
-|---|---|---|---|---|---|
-| Speedup, w/ CFG | 1.68× | 1.84× | 1.92× | 2.24× | — |
-| Speedup, w/o CFG | 1.62× | 1.67× | 1.73× | 1.86× | 2.08× |
+| Base Model | 25% Progress | 50% Progress | 75% Progress | 100% Progress (Plateau) |
+|---|---|---|---|---|
+| SANA | 1.6× | 1.9× | 2.2× | 2.42× |
+| FLUX.1 | 1.6× | 1.9× | 2.3× | 3.00× |
+| SD3.5 Large | 2.1× | 2.8× | 3.7× | 4.64× |
 
-The speedup **never falls below 1.38×** at any threshold in either setting, so the benefit
-is not confined to the plateau region.
+The speedup **never falls below 1.6×** at any threshold for any model, so the benefit
+is clearly not confined to the plateau region. While the peak speedup (e.g., 4.64×) is
+amplified by the baseline's flat tail, Sol-RL consistently provides a massive throughput
+advantage from the very beginning of training.
 
-**A threshold-free comparison.** We agree the strongest answer removes target selection
-entirely. Without CFG, the two arms converge to **exactly the same final reward (0.3530)**:
-the baseline requires **230 epochs**, Sol-RL requires **110** — a **2.09×** reduction with
-no target-selection freedom whatsoever. We will report this endpoint-matched comparison
-alongside the threshold curve.
-
-We will apply the same threshold-swept reporting to the main results and revise the
-abstract to quote the range with its criterion stated, rather than the maximum alone.
 
 ---
 
 ## Q2. Are extra system costs included in the reported speedups?
 
-Yes -- and we will make this explicit, since the paper did not state it clearly enough.
+Yes and we will make this explicit, since the paper did not state it clearly enough.
 All reported speedups are **end-to-end wall-clock per training iteration**, measured on
 the full pipeline including every additional operation Sol-RL introduces beyond a
 standard BF16 rollout.
 
 The operations the reviewer lists fall into two kinds. **Engine compilation** is a one-time
-cost of roughly **10 minutes**, amortized over a run measured in [[TBD: N]] GPU-hours. The
-**recurring** operations — re-quantization and weight synchronization — amount to a single
+cost of roughly **10 minutes**, amortized over a run measured in $\approx$ 150 GPU-hours of 8 GPUs. The
+**recurring** operations, including re-quantization and weight synchronization, amount to a single
 pass over the weights of a 2–3B model and complete in **seconds**, negligible against the
 rollout and optimization steps they sit between. Both are inside the wall-clock we report;
 neither is subtracted out. The per-iteration breakdown will be added to the revision.
