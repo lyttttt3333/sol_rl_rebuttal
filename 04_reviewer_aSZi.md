@@ -1,9 +1,9 @@
 # Response to Reviewer aSZi
 
 We thank the reviewer for the positive assessment of our method's novelty, solid empirical
-validation, and algorithm-hardware co-design. We agree with the weaknesses you
-pointed out, precisely targeting the boundary conditions of our empirical claims
-and theoretical framework. In response to this constructive critique, we provide concrete
+validation, and algorithm-hardware co-design. We especially appreciate that the concerns
+raised precisely target the boundary conditions of our empirical claims and theoretical
+framework. In response to this constructive critique, we provide concrete
 explanations below, supported by new ablation studies on quantization formats and clarification
 of the theoretical lower bound.
 
@@ -14,12 +14,15 @@ of the theoretical lower bound.
 We appreciate the reviewer acknowledging that the paper provides strong empirical
 evidence across the tested models, and agree that generalization beyond them is not
 guaranteed. We have extended the evidence along the axes most likely to break the
-assumption, and we scope the claim explicitly where it does not hold.
+assumption.
 
 **More complex / different reward functions.** We measure the quantity the method actually
 depends on: from a pool of 96 candidates we take the FP4 proxy's best-12 and worst-12, and
-report where those same seeds rank under the high-precision (BF16) reward, averaged over the
-12. A perfect proxy gives **6.5 / 90.5**; one with **no information** gives **48.5 / 48.5**.
+report their average ranks under the high-precision (BF16) reward. A perfect proxy gives
+**6.5 / 90.5**, corresponding to the true top-12 and bottom-12 candidates and thus the most
+informative contrastive selection. A proxy carrying **no information** gives
+**48.5 / 48.5**, because its ranking is independent of the true BF16 ranking and its selected
+sets are effectively random.
 Protocol: 256 prompts × 96 seeds.
 
 | Reward | Type | FLUX.1 | SANA | SD3.5-M |
@@ -32,28 +35,27 @@ Protocol: 256 prompts × 96 seeds.
 
 We fully acknowledge that ranking preservation varies depending on the specific combination
 of base model and reward model. For example, the assumption does weaken for OCR and on SD3.5-M. 
-However, this degradation is **bounded**. Even in the weakest cell (SD3.5-M / Aesthetic),
+However, even in the weakest cell (SD3.5-M / Aesthetic),
 the proxy yields **19.1 / 67.1**, which remains clearly informative relative to the
 no-information reference of **48.5 / 48.5**. Therefore, across the tested model-reward
 combinations, the FP4 proxy retains sufficient ranking information to provide a
 **reliable contrastive learning signal** for accelerating GRPO convergence.
 
 **Video generation.** We agree this is an important next step. The underlying
-mechanism is theoretically not image-specific. To verify whether this proxy empirically extends
-to video generation, we are currently running ranking-consistency experiments on video
-models and will share the results in the coming days.
+mechanism is theoretically not image-specific. To verify whether the ranking-preservation
+property extends to video generation, we are currently running ranking-consistency experiments
+on video models and will share the results in the coming days.
 
 ---
 
 ## W2. No comparison against a different quantization format (e.g. FP8)
 
 We agree this comparison is the right way to isolate the effect of the aggressive FP4 format
-from the broader two-stage framework. The short answer is: FP8 is a perfectly usable
-operating point and preserves ranking slightly better than FP4, but because our framework is
+from the broader two-stage framework. FP8 preserves ranking slightly better than FP4, but because our framework is
 highly tolerant to selection noise, FP4 allows us to extract the maximum throughput
 advantage without sacrificing final performance.
 
-**(1) Ranking preservation.** We first measure how the precision drop affects selection
+**(1) Ranking preservation.** We first measure how reducing precision affects selection
 fidelity (SD3.5-M, HPSv2, 96 candidates, selecting top-12 and bottom-12). We report the true
 BF16 rank of the candidates selected by each proxy:
 
@@ -66,23 +68,22 @@ BF16 rank of the candidates selected by each proxy:
 
 As expected, FP8 preserves ranking slightly better than FP4.
 
-**(2) End-to-end performance under equal budget.** Because the two-stage framework
+**(2) End-to-end performance under equal training budget.** Because the two-stage framework
 insulates the gradients from the proxy's exact output, the pipeline easily tolerates
 FP4's slight ranking degradation. Consequently, under fixed computational budgets (in GPU
 hours), the faster FP4 proxy can execute more rollouts and scale the search pool more
 aggressively than FP8, converting that throughput advantage directly into higher final
-eval rewards:
+evaluation rewards:
 
 | Method | 50 GPU-hours | 100 GPU-hours | 150 GPU-hours |
 |---|---|---|---|
 | BF16 Baseline | 0.293 | 0.298 | 0.301 |
-| FP8 Sol-RL | 0.295 | 0.305 | 0.311 |
+| FP8 Sol-RL | 0.295 | 0.305 | 0.308 |
 | FP4 Sol-RL (Ours) | **0.301** | **0.309** | **0.312** |
 
-This comparison clarifies the specific advantage of FP4: while FP8 is a viable
-middle ground, FP4 safely maximizes the search-pool scaling that the two-stage framework
-enables, yielding the best compute-to-reward Pareto frontier. We will add this analysis to
-the revision.
+This comparison clarifies the specific advantage of FP4. 
+FP4 safely maximizes the search-pool scaling that the two-stage framework
+enables, yielding faster convergence, especially under smaller compute budgets.
 
 ---
 

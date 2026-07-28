@@ -39,7 +39,7 @@ we observe the final eval rewards across three budget thresholds:
 | Method | 50 GPU-hours | 100 GPU-hours | 150 GPU-hours |
 |---|---|---|---|
 | BF16 Baseline | 0.293 | 0.298 | 0.301 |
-| FP8 Sol-RL | 0.295 | 0.305 | 0.311 |
+| FP8 Sol-RL | 0.295 | 0.305 | 0.308 |
 | **FP4 Sol-RL (Ours)** | **0.301** | **0.309** | **0.312** |
 
 The first table establishes that the noise is real and grows along the sweep:
@@ -158,7 +158,7 @@ budgets (GPU-hours):
 | Method | 50 GPU-hours | 100 GPU-hours | 150 GPU-hours |
 |---|---|---|---|
 | BF16 Baseline | 0.293 | 0.298 | 0.301 |
-| FP8 Sol-RL | 0.295 | 0.305 | 0.311 |
+| FP8 Sol-RL | 0.295 | 0.305 | 0.308 |
 | **FP4 Sol-RL (Ours)** | **0.301** | **0.309** | **0.312** |
 
 This comparison clarifies the specific advantage of FP4: under fixed computational budgets,

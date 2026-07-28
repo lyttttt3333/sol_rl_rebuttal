@@ -113,7 +113,7 @@ The average true BF16 ranks of the selected top-12 / bottom-12 are **6.5 / 90.5*
 **7.7 / 87.8** for FP8, and **8.6 / 83.9** for FP4. Thus, lower precision measurably
 perturbs selection, but the FP4 proxy remains highly informative. More importantly, under
 equal 50 / 100 / 150 GPU-hour budgets, FP4 Sol-RL obtains **0.301 / 0.309 / 0.312**, compared
-with **0.295 / 0.305 / 0.311** for FP8 Sol-RL and **0.293 / 0.298 / 0.301** for the BF16
+with **0.295 / 0.305 / 0.308** for FP8 Sol-RL and **0.293 / 0.298 / 0.301** for the BF16
 baseline. The added selection noise therefore does not amplify into worse final preferences.
 
 ---

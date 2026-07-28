@@ -9,11 +9,11 @@ algorithm-agnostic (W3). We address each point below.
 
 ---
 
-## W1. The first contribution is an overclaim -- it should be motivation
+## W1. The first contribution is an overclaim
 
 **We fully agree, and will revise it accordingly.** 
 The computational bottleneck of RL rollouts and the degradation caused by low-precision
-training are established observations (including in the LLM quantized-RL literature). 
+training are established observations (including in the LLM quantized-RL). 
 We thank the reviewer for this correction; it sharpens what the paper actually claims.
 
 ---

@@ -35,7 +35,7 @@ To isolate the effect of FP4 noise and check for error amplification, we perform
 | Method | 50 GPU-hours | 100 GPU-hours | 150 GPU-hours |
 |---|---|---|---|
 | BF16 Baseline | 0.293 | 0.298 | 0.301 |
-| FP8 Sol-RL | 0.295 | 0.305 | 0.311 |
+| FP8 Sol-RL | 0.295 | 0.305 | 0.308 |
 | **FP4 Sol-RL (Ours)** | **0.301** | **0.309** | **0.312** |
 
 These tables confirm that while FP4 introduces measurable selection noise, it does **not** amplify incorrect preferences in the final model. Because the actual gradients are computed exclusively on BF16 regenerations, the noise only affects search efficiency. Under a fixed compute budget, FP4's speed advantage allows scaling the search pool ($N=96$), converting that throughput directly into higher end-to-end rewards than FP8 or the baseline.
