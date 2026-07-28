@@ -112,14 +112,6 @@ assumption. The full protocol, now stated in the revision:
 - **Reward models:** HPSv2, PickScore, ImageReward, Aesthetic, CLIPScore, OCR
 - **Figure 3c and Table 8:** the same 256 prompts × 96 seeds
 
-**Disaggregated results (previously pooled).** Per base model:
-
-| Base model | rho (semantic rewards) | rho (low-level rewards) |
-|---|---|---|
-| SD3.5-Large | [[TBD]] | [[TBD]] |
-| FLUX.1 | [[TBD]] | [[TBD]] |
-| SANA-1.5 | [[TBD]] | [[TBD]] |
-
 **Per prompt difficulty.** We use two ladders with an unambiguous ordering rather than a
 subjective split. Cells are mean true rank (of 96) of the proxy-selected top-12 / bottom-12.
 
