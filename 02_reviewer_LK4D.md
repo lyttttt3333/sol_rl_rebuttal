@@ -35,10 +35,10 @@ difficulty using two standard benchmarks:
 
 On GenEval, the ranking fidelity remains remarkably stable across difficulty levels:
 
-| Model / reward (GenEval) | Easiest: single_object | Hardest: position |
-|---|---|---|
-| FLUX | 8.7 / 87.9 | 8.7 / 86.7 |
-| SANA | 10.5 / 85.5 | 12.3 / 84.5 |
+| Model / reward (GenEval) | single_obj | two_obj | colors | counting | color_attr | position |
+|---|---|---|---|---|---|---|
+| FLUX | 8.7 / 87.9 | 8.5 / 87.1 | 8.5 / 87.5 | 9.0 / 88.1 | 7.9 / 86.5 | 8.7 / 86.7 |
+| SANA | 10.5 / 85.5 | 12.4 / 84.6 | 11.1 / 85.0 | 10.8 / 85.4 | 10.5 / 85.5 | 12.3 / 84.5 |
 
 Similarly, on the OCR ladder, performance holds up well even as the task becomes
 progressively harder, showing only mild degradation at the absolute extreme (5 digits for SANA):
