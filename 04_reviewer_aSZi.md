@@ -33,10 +33,10 @@ Protocol: 256 prompts × 96 seeds.
 We fully acknowledge that ranking preservation varies depending on the specific combination
 of base model and reward model. For example, the assumption does weaken for OCR and on SD3.5-M. 
 However, this degradation is **bounded**. Even in the weakest cell (SD3.5-M / Aesthetic),
-the proxy still separates its selected top and bottom sets compared to an uninformative random proxy **48.5 / 48.5**. Therefore, regardless of the model-reward
-combination, the FP4 proxy consistently introduces enough information to maintain useful
-variance among candidates. This ensures a **reliable, high-contrast learning signal**
-that remains highly effective at accelerating the convergence of GRPO.
+the proxy yields **19.1 / 67.1**, which remains clearly informative relative to the
+no-information reference of **48.5 / 48.5**. Therefore, across the tested model-reward
+combinations, the FP4 proxy retains sufficient ranking information to provide a
+**reliable contrastive learning signal** for accelerating GRPO convergence.
 
 **Video generation.** We agree this is an important next step. The underlying
 mechanism is theoretically not image-specific. To verify whether this proxy empirically extends
