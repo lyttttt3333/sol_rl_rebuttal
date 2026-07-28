@@ -50,7 +50,7 @@ taken from the baseline's late-stage plateau can inflate the apparent speedup
 arbitrarily.
 
 **How the target was originally chosen.** The figure is *time-to-parity*: the wall-clock
-GPU-hours Sol-RL needs to reach the **baseline's final** reward, relative to the hours the
+GPU-hours Sol-RL needs to reach the **baseline's final** reward (under given training GPU-budgets), relative to the hours the
 baseline needs. The reviewer is right that this is the criterion most sensitive to a
 plateaued baseline, where 4.64× is exactly the result of this measurement method.
 
@@ -67,8 +67,7 @@ Sol-RL GPU-hours) required to reach each specific reward standard:
 
 The speedup **never falls below 1.6×** at any threshold for any model, so the benefit
 is clearly not confined to the plateau region. While the peak speedup (e.g., 4.64×) is
-amplified by the baseline's flat tail, Sol-RL consistently provides a massive throughput
-advantage from the very beginning of training.
+amplified by the baseline's flat tail, Sol-RL consistently provides a convergency speedup.
 
 
 ---
@@ -83,7 +82,7 @@ standard BF16 rollout.
 The operations the reviewer lists fall into two kinds. **Engine compilation** is a one-time
 cost of roughly **10 minutes**, amortized over a run measured in $\approx$ 150 GPU-hours of 8 GPUs. The
 **recurring** operations, including re-quantization and weight synchronization, amount to a single
-pass over the weights of a 2–3B model and complete in **seconds**, negligible against the
+pass over the weights of a T2I model(<10B) and complete in **seconds**, negligible against the
 rollout and optimization steps they sit between. Both are inside the wall-clock we report;
 neither is subtracted out. The per-iteration breakdown will be added to the revision.
 
@@ -94,12 +93,11 @@ neither is subtracted out. The per-iteration breakdown will be added to the revi
 We agree this was underspecified for an analysis that carries the method's core
 assumption. The full protocol, now stated in the revision:
 
-- **Prompts:** 256, from the standard splits used by the DiffusionNFT codebase
-  (GenEval / OCR / PickScore / DrawBench)
+- **Prompts for ranking analysis:** 256, from the standard splits used by the DiffusionNFT codebase
 - **Seeds:** 96 per prompt — i.e. **24,576 samples per configuration**
 - **Candidates per group:** 96
-- **Base models:** FLUX.1, SANA, SD3.5 — reported **separately, never pooled**
-- **Reward models:** HPSv2, PickScore, ImageReward, Aesthetic, CLIPScore, OCR
+- **Base models:** FLUX.1, SANA, SD3.5 — reported **pooled in paper**
+- **Reward models:** HPSv2, PickScore, ImageReward, CLIPScore
 - **Figure 3c and Table 8:** the same 256 prompts × 96 seeds
 
 **Per prompt difficulty.** We use two ladders with an unambiguous ordering rather than a
@@ -134,28 +132,6 @@ gives 48.5 / 48.5, while a perfect proxy gives 6.5 / 90.5:
 The fidelity is strongest for high-level semantic and preference rewards. For low-level
 rewards (Aesthetic and OCR) where FP4 artifacts interfere most, the proxy degrades slightly
 but remains highly informative, separating its selected top and bottom sets decisively.
-
-**Two findings, and we report the second even though it is the less convenient one.**
-
-First, prompt difficulty is largely **not** the driver. Across the full GenEval ladder
-FLUX/HPSv2 moves from 8.7/87.9 to 8.7/86.7 — flat — and SANA behaves the same way. What
-does vary is **quantization scope**: at any fixed difficulty, SD3.5-M (fully quantized) sits
-roughly twice as far from ideal as FLUX or SANA. This is a more actionable characterization
-than "harder prompts break the proxy", and we will state it as such.
-
-Second, there is one genuine difficulty effect, and it is confined to the **bottom end of
-the OCR ladder**: as digit count rises the proxy loses its ability to identify the *worst*
-candidates (SANA/OCR 84.0 → 66.9). The explanation is mechanical — once five digits are
-uniformly illegible, "which is least legible" carries little signal. Notably the **top end
-is unaffected** (21.2 → 20.3), so the positive half of each contrastive pair remains intact.
-
-We additionally varied the **solver** (our default Euler flow-matching sampler vs Heun,
-all else fixed): the top end shifts by at most 1.2 rank positions and the bottom end is
-unchanged for the preference rewards, with the one appreciable shift again at OCR's bottom
-end (−5.6). That the same localized weak spot appears under both an independent difficulty
-sweep and a solver change suggests it is a real property — the proxy's difficulty in
-ordering *uniformly illegible* text — rather than measurement noise, and we report it as
-such rather than pooling it away.
 
 ---
 

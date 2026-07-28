@@ -154,16 +154,5 @@ still serve as a candidate pre-filter.
 
 ---
 
-## On Significance
-
-We note the written review is largely positive while Significance is scored 2, so we
-address that directly. In our 24-in-96 setting the rollout stage generates 4608 images per
-epoch while only 1152 reach the optimizer — rollout, not optimization, is where the compute
-goes, and that ratio *grows* with pool size. It is therefore the binding constraint on
-scaling diffusion RL rather than an incidental cost, and the results above show the
-constraint can be removed without changing the objective, the model or the reward, across
-three different objectives. We would welcome the reviewer's view on what further evidence
-would best speak to significance.
-
 We thank the reviewer again and are happy to run further experiments during the
 discussion period.
