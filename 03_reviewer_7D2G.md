@@ -119,8 +119,11 @@ subjective split. Cells are mean true rank (of 96) of the proxy-selected top-12 
 | SANA | 13.8 / 87.0 | 12.7 / 82.9 | 12.9 / **78.6** |
 
 Finally, to demonstrate that ranking preservation holds across different kinds of objectives,
-we tested the FP4 proxy across **five distinct reward models**. The baseline random proxy
-gives 48.5 / 48.5, while a perfect proxy gives 6.5 / 90.5:
+we tested the FP4 proxy across **five distinct reward models**. A perfect proxy gives
+**6.5 / 90.5**, corresponding to the true top-12 and bottom-12 candidates and thus the most
+informative contrastive selection. A proxy carrying **no information** gives
+**48.5 / 48.5**, because its ranking is independent of the true BF16 ranking and its selected
+sets are effectively random:
 
 | Reward | Type | FLUX.1 | SANA | SD3.5-M |
 |---|---|---|---|---|

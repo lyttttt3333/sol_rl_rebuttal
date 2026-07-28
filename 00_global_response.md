@@ -56,9 +56,11 @@ Reviewer aSZi's request for an FP8 comparison (W2) and Reviewer LK4D's question 
 Sol-RL uses the FP4 ranking only to *choose* which candidates to regenerate in BF16, so the
 operative question is whether the **selected sets** match those a high-precision pipeline
 would have chosen. From a pool of 96 candidates we take the FP4 proxy's best-12 and
-worst-12, and report where those same seeds actually rank under the **BF16** reward,
-averaged over the 12. A perfect proxy gives **6.5 / 90.5**; a proxy with **no information**
-gives **48.5 / 48.5**.
+worst-12, and report their average ranks under the **BF16** reward. A perfect proxy gives
+**6.5 / 90.5**, corresponding to the true top-12 and bottom-12 candidates and thus the most
+informative contrastive selection. A proxy carrying **no information** gives
+**48.5 / 48.5**, because its ranking is independent of the true BF16 ranking and its selected
+sets are effectively random.
 
 | Reward | Type | FLUX.1 | SANA | SD3.5-M |
 |---|---|---|---|---|
@@ -88,12 +90,12 @@ the ordering expected if FP4 artifacts interfere most with low-level judgements.
 this rather than average it away, and will delimit the assumption explicitly in the revision
 instead of claiming universal validity.
 
-Second, the degradation is **bounded**. In the weakest cell (SD3.5-M / Aesthetic), the proxy
-still separates its top and bottom sets by 48 rank positions out of 96, against 0 for a
-no-information proxy and 84 for a perfect one. Across the human-preference rewards that
-dominate our main experiments the selected sets are close to the high-precision pipeline's.
-The FP4 stage causes a **measurable, bounded** loss of selection quality and never
-approaches the no-information regime.
+Second, the degradation is **bounded**. Even in the weakest cell (SD3.5-M / Aesthetic), the
+proxy yields **19.1 / 67.1**, which remains clearly informative relative to the
+no-information reference of **48.5 / 48.5**. Across the human-preference rewards that
+dominate our main experiments, the selected sets are close to the high-precision pipeline's.
+The FP4 stage causes a **measurable, bounded** loss of selection quality and never approaches
+the no-information regime.
 
 ### (c) Held-out reward evaluation — genuine alignment or reward hacking?
 

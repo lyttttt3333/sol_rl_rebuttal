@@ -12,8 +12,11 @@ diffusion RL". We are equally grateful for the valuable questions, and we addres
 
 We agree this is the load-bearing assumption, and we have tested it along all three axes the
 reviewer names. All cells report the **mean true (BF16) rank of the proxy-selected top-12 /
-bottom-12** out of a 96-candidate pool, over 256 prompts × 96 seeds. **Perfect proxy =
-6.5 / 90.5; no-information proxy = 48.5 / 48.5.**
+bottom-12** out of a 96-candidate pool, over 256 prompts × 96 seeds. A perfect proxy gives
+**6.5 / 90.5**, corresponding to the true top-12 and bottom-12 candidates and thus the most
+informative contrastive selection. A proxy carrying **no information** gives
+**48.5 / 48.5**, because its ranking is independent of the true BF16 ranking and its selected
+sets are effectively random.
 
 **(i) Across reward models × base models**
 
@@ -62,9 +65,10 @@ Fidelity is highest for the human-preference rewards and lowest for the low-leve
 we will state that ordering rather than claim uniform validity. Difficulty itself is not the
 dominant factor — **quantization scope** is. The one recurring weak spot, visible on all
 three axes, is the **bottom end of the OCR reward**; the top end never degrades materially.
-Even the weakest cell (SD3.5-M / Aesthetic) still separates its selected sets by 48 rank
-positions of 96, versus 0 for an uninformative proxy. Sol-RL needs a ranking informative
-enough to identify contrastive candidates, not an exact one, and that holds throughout.
+Even the weakest cell (SD3.5-M / Aesthetic) yields **19.1 / 67.1**, which remains clearly
+informative relative to the no-information reference of **48.5 / 48.5**. Sol-RL needs a
+ranking informative enough to identify contrastive candidates, not an exact one, and that
+holds throughout.
 
 ---
 

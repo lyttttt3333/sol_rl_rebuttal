@@ -9,7 +9,13 @@ We summarize our responses to the Primary Concerns below.
 ### 1. Over-reliance on the reward model and fragile FP4 ranking assumptions
 
 **A. Ranking stability across diverse and low-level rewards**
-We evaluated the FP4 proxy's ranking preservation across 5 diverse reward models, specifically targeting the low-level Aesthetic and OCR metrics the reviewers highlighted. From a pool of 96 candidates, we report the true BF16 rank of the proxy's top-12 and bottom-12 picks. A perfect proxy yields **6.5 / 90.5**; a random proxy yields **48.5 / 48.5**.
+We evaluated the FP4 proxy's ranking preservation across five diverse reward models,
+specifically targeting the low-level Aesthetic and OCR metrics highlighted by the reviewers.
+From a pool of 96 candidates, we report the average BF16 ranks of the proxy-selected top-12
+and bottom-12. A perfect proxy gives **6.5 / 90.5**, corresponding to the true top-12 and
+bottom-12 candidates and thus the most informative contrastive selection. A proxy carrying
+**no information** gives **48.5 / 48.5**, because its ranking is independent of the true
+BF16 ranking and its selected sets are effectively random.
 
 | Reward | Type | FLUX.1 | SANA | SD3.5-M |
 |---|---|---|---|---|

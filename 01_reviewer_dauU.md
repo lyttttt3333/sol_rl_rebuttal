@@ -26,9 +26,11 @@ We therefore ran an ablation experiment across reward-model types, including the
 aesthetic and clarity-based rewards highlighted by the reviewer.
 
 We measure the quantity Sol-RL actually uses. From 96 candidates, we take the FP4 proxy's
-**best-12 and worst-12**, then report where those same seeds rank under the high-precision
-(BF16) reward, averaged over the 12. A perfect proxy gives **6.5 / 90.5**; a proxy with no
-information gives **48.5 / 48.5**.
+**best-12 and worst-12**, then report their average ranks under the high-precision (BF16)
+reward. A perfect proxy gives **6.5 / 90.5**, corresponding to the true top-12 and bottom-12
+candidates and thus the most informative contrastive selection. A proxy carrying **no
+information** gives **48.5 / 48.5**, because its ranking is independent of the true BF16
+ranking and its selected sets are effectively random.
 
 | Reward | Type | FLUX.1 | SANA | SD3.5-M |
 |---|---|---|---|---|
