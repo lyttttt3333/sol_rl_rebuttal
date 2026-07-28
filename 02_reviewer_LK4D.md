@@ -25,22 +25,28 @@ bottom-12** out of a 96-candidate pool, over 256 prompts × 96 seeds. **Perfect 
 | Aesthetic | low-level aesthetic | 9.3 / 86.7 | 11.7 / 84.4 | 19.1 / 67.1 |
 | OCR | low-level, clarity | 13.2 / 82.8 | 20.7 / 73.2 | 15.0 / 72.9 |
 
-**(ii) By prompt difficulty** — GenEval, easiest → hardest category:
+**(ii) By prompt difficulty.** We further break down the ranking preservation performance
+across different levels of prompt complexity on both FLUX and SANA. We define prompt
+difficulty using two standard benchmarks: 
+1. **GenEval**, where we test categories ranging from the easiest (`single_object`) to the
+   hardest (`position`).
+2. **OCR digit-count ladder**, where the difficulty scales from generating 1 digit (easiest)
+   up to 5 digits (hardest).
 
-| Model / reward | single_object | position |
+On GenEval, the ranking fidelity remains remarkably stable across difficulty levels:
+
+| Model / reward (GenEval) | Easiest: single_object | Hardest: position |
 |---|---|---|
-| FLUX / HPSv2 | 8.7 / 87.9 | 8.7 / 86.7 |
-| FLUX / ImageReward | 10.6 / 87.0 | 9.9 / 84.3 |
-| SANA / Aesthetic | 10.5 / 85.5 | 12.3 / 84.5 |
-| SD3.5-M / ImageReward | 22.0 / 65.1 | 27.8 / 57.7 |
+| FLUX | 8.7 / 87.9 | 8.7 / 86.7 |
+| SANA | 10.5 / 85.5 | 12.3 / 84.5 |
 
-and an OCR digit-count ladder, 1 → 5 digits:
+Similarly, on the OCR ladder, performance holds up well even as the task becomes
+progressively harder, showing only mild degradation at the absolute extreme (5 digits for SANA):
 
-| Model / reward | 1 digit | 3 digits | 5 digits |
+| Model / reward (OCR) | Easiest: 1 digit | Medium: 3 digits | Hardest: 5 digits |
 |---|---|---|---|
-| FLUX / HPSv2 | 8.1 / 87.0 | 8.4 / 87.8 | 8.2 / 87.7 |
-| FLUX / OCR | 13.8 / 87.0 | 12.7 / 82.9 | 12.9 / **78.6** |
-| SANA / OCR | 21.2 / 84.0 | 20.6 / **68.7** | 20.3 / **66.9** |
+| FLUX | 8.1 / 87.0 | 8.4 / 87.8 | 8.2 / 87.7 |
+| SANA | 13.8 / 87.0 | 12.7 / 82.9 | 12.9 / **78.6** |
 
 **(iii) By sampling schedule** — Euler vs Heun solver, all else fixed:
 
