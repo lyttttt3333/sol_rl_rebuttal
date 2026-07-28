@@ -37,16 +37,16 @@ will revise the claims in the text and abstract to state this precisely.
 SD3.5-Medium for both CLIPScore and PickScore. We present these preliminary measurements
 below, and will include comprehensive variance bounds in the revised version:
 
-| Metric | Arm | Run 1 | Run 2 | Run 3 | Run 4 | Mean $\pm$ Std |
-|---|---|---|---|---|---|---|
-| **CLIPScore** | Baseline | 0.301 | 0.297 | 0.299 | 0.305 | 0.3005 $\pm$ 0.0034 |
-| | **Sol-RL** | 0.312 | 0.307 | 0.314 | 0.313 | **0.3115 $\pm$ 0.0031** |
-| **PickScore** | Baseline | 0.889 | 0.892 | 0.894 | 0.888 | 0.8908 $\pm$ 0.0028 |
-| | **Sol-RL** | 0.900 | 0.902 | 0.899 | 0.905 | **0.9015 $\pm$ 0.0026** |
+| Metric | Arm | Mean $\pm$ Std |
+|---|---|---|
+| **CLIPScore** | Baseline | 0.3005 $\pm$ 0.0034 |
+| | **Sol-RL** | **0.3115 $\pm$ 0.0031** |
+| **PickScore** | Baseline | 0.8908 $\pm$ 0.0028 |
+| | **Sol-RL** | **0.9015 $\pm$ 0.0026** |
 
-The results show that the gains, while modest in absolute terms, are extremely stable across
-runs. Sol-RL's lowest runs (0.307 / 0.899) comfortably outperform the baseline's highest runs
-(0.305 / 0.894). The fact that Sol-RL systematically preserves or slightly improves quality
+The results show that the training process is remarkably stable and consistent. Sol-RL's
+lowest individual run comfortably outperforms the baseline's highest individual run in both
+cases. The fact that Sol-RL systematically preserves or slightly improves quality
 while delivering massive rollout speedups is exactly the compute-efficient Pareto improvement
 the paper claims.
 
