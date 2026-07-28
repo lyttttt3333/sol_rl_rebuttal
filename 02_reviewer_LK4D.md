@@ -61,22 +61,16 @@ progressively harder, showing only mild degradation at the absolute extreme (5 d
 | Aesthetic | 9.3 / 86.7 | 10.4 / 85.0 |
 | OCR | 13.2 / 82.8 | 14.8 / 82.4 |
 
-Fidelity is highest for the human-preference rewards and lowest for the low-level ones, and
-we will state that ordering rather than claim uniform validity. Difficulty itself is not the
-dominant factor — **quantization scope** is. The one recurring weak spot, visible on all
-three axes, is the **bottom end of the OCR reward**; the top end never degrades materially.
 Even the weakest cell (SD3.5-M / Aesthetic) yields **15.1 / 79.1**, which remains clearly
-informative relative to the no-information reference of **48.5 / 48.5**. Sol-RL needs a
-ranking informative enough to identify contrastive candidates, not an exact one, and that
-holds throughout.
+informative relative to the no-information reference of **48.5 / 48.5**.
 
 ---
 
 ## W2. Selecting only top/bottom may overemphasize extremes and discard medium-quality samples
 
 We agree with the reviewer's intuition that mid-ranked samples contain useful diversity.
-However, the core idea of our method is to provide the most robust learning signal possible
-under a minimal training budget, which is why we rely exclusively on the extreme candidates.
+The core idea of our method is to provide the most robust learning signal possible
+under a fixed training budget, which is why we rely exclusively on the extreme candidates.
 
 To further investigate the effect of mid-ranked samples, we tested them directly. Holding
 the candidate pool fixed at 96, we compared using only the extremes (24) against adding 24
@@ -87,7 +81,7 @@ PickScore, iteration 250), adding mid-ranked samples actually degraded performan
 |---|---|---|
 | **24 (ours)** | **0.90762** | **0.150** |
 | 48 | 0.90154 | 0.144 |
-| 96 — nothing discarded | 0.89276 | 0.135 |
+| 96 | 0.89276 | 0.135 |
 
 We hypothesize this degradation occurs because reward models are least confident when scoring
 mid-ranked, near-tied candidates. Because GRPO-style objectives must force each candidate
@@ -137,8 +131,6 @@ preference pair is drawn.
 |---|---|---|
 | Flow-GRPO baseline (24-in-24) | 0.3254 | 0.3448 |
 | **Flow-GRPO + Sol-RL (24-in-96)** | **0.3306** | **0.3579** |
-
-<br>
 
 | Eval reward (HPSv2) | ≈ 3 GPU-hours | ≈ 11 GPU-hours |
 |---|---|---|
