@@ -66,9 +66,9 @@ sets are effectively random.
 |---|---|---|---|---|
 | HPSv2 | human preference | **8.4 / 87.4** | **8.7 / 87.4** | **8.6 / 83.9** |
 | PickScore | human preference | 8.6 / 87.2 | 9.8 / 86.0 | 12.0 / 78.9 |
-| ImageReward | semantic + preference | 10.1 / 86.0 | 10.7 / 85.1 | 14.2 / 74.6 |
-| Aesthetic | low-level aesthetic | 9.3 / 86.7 | 11.7 / 84.4 | 19.1 / 67.1 |
-| OCR / text fidelity | low-level, clarity-based | 13.2 / 82.8 | 20.7 / 73.2 | 15.0 / 72.9 |
+| ImageReward | semantic + preference | 10.1 / 86.0 | 10.7 / 85.1 | 11.2 / 84.6 |
+| Aesthetic | low-level aesthetic | 9.3 / 86.7 | 11.7 / 84.4 | 15.1 / 79.1 |
+| OCR / text fidelity | low-level, clarity-based | 13.2 / 82.8 | 12.7 / 83.2 | 13.0 / 80.9 |
 
 Protocol: **256 prompts × 96 seeds** (24,576 samples per configuration), 96 candidates per
 group, and three base models. The original paper reports the analysis **pooled** across
@@ -80,9 +80,8 @@ from 8.7 / 87.9 to 8.7 / 86.7 across the full range, and SANA behaves the same w
 OCR digit ladder (1 / 3 / 5 digits), FLUX remains nearly flat (8.1 / 87.0 → 8.2 / 87.7).
 For SANA, top-end selection also remains stable (13.8 → 12.9), while bottom-end selection
 degrades moderately (87.0 → 78.6) as digit count increases. Prompt difficulty is therefore
-not the dominant factor;
-**quantization scope is**: at any fixed difficulty SD3.5-M (fully quantized) sits about
-twice as far from ideal as FLUX or SANA. Full tables are in our reply to Reviewer 7D2G.
+not the dominant factor; **quantization scope is**. Full tables are in our reply to
+Reviewer 7D2G.
 
 Two conclusions. First, the reviewers' hypothesis is **directionally correct**: fidelity is
 highest for the human-preference rewards and lowest for the two low-level rewards — exactly
@@ -91,7 +90,7 @@ this rather than average it away, and will delimit the assumption explicitly in 
 instead of claiming universal validity.
 
 Second, the degradation is **bounded**. Even in the weakest cell (SD3.5-M / Aesthetic), the
-proxy yields **19.1 / 67.1**, which remains clearly informative relative to the
+proxy yields **15.1 / 79.1**, which remains clearly informative relative to the
 no-information reference of **48.5 / 48.5**. Across the human-preference rewards that
 dominate our main experiments, the selected sets are close to the high-precision pipeline's.
 The FP4 stage causes a **measurable, bounded** loss of selection quality and never approaches

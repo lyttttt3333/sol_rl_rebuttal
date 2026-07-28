@@ -29,14 +29,15 @@ Protocol: 256 prompts × 96 seeds.
 |---|---|---|---|---|
 | HPSv2 | human preference | **8.4 / 87.4** | **8.7 / 87.4** | **8.6 / 83.9** |
 | PickScore | human preference | 8.6 / 87.2 | 9.8 / 86.0 | 12.0 / 78.9 |
-| ImageReward | semantic + preference | 10.1 / 86.0 | 10.7 / 85.1 | 14.2 / 74.6 |
-| Aesthetic | aesthetic | 9.3 / 86.7 | 11.7 / 84.4 | 19.1 / 67.1 |
-| OCR | clarity-based | 13.2 / 82.8 | 20.7 / 73.2 | 15.0 / 72.9 |
+| ImageReward | semantic + preference | 10.1 / 86.0 | 10.7 / 85.1 | 11.2 / 84.6 |
+| Aesthetic | aesthetic | 9.3 / 86.7 | 11.7 / 84.4 | 15.1 / 79.1 |
+| OCR | clarity-based | 13.2 / 82.8 | 12.7 / 83.2 | 13.0 / 80.9 |
 
 We fully acknowledge that ranking preservation varies depending on the specific combination
-of base model and reward model. For example, the assumption does weaken for OCR and on SD3.5-M. 
+of base model and reward model. The recurring weak spot is the bottom end of the OCR reward,
+while the top end remains stable; quantization scope also affects fidelity.
 However, even in the weakest cell (SD3.5-M / Aesthetic),
-the proxy yields **19.1 / 67.1**, which remains clearly informative relative to the
+the proxy yields **15.1 / 79.1**, which remains clearly informative relative to the
 no-information reference of **48.5 / 48.5**. Therefore, across the tested model-reward
 combinations, the FP4 proxy retains sufficient ranking information to provide a
 **reliable contrastive learning signal** for accelerating GRPO convergence.

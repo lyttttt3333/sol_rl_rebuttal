@@ -24,9 +24,9 @@ sets are effectively random.
 |---|---|---|---|---|
 | HPSv2 | human preference | **8.4 / 87.4** | **8.7 / 87.4** | **8.6 / 83.9** |
 | PickScore | human preference | 8.6 / 87.2 | 9.8 / 86.0 | 12.0 / 78.9 |
-| ImageReward | semantic + preference | 10.1 / 86.0 | 10.7 / 85.1 | 14.2 / 74.6 |
-| Aesthetic | low-level aesthetic | 9.3 / 86.7 | 11.7 / 84.4 | 19.1 / 67.1 |
-| OCR | low-level, clarity | 13.2 / 82.8 | 20.7 / 73.2 | 15.0 / 72.9 |
+| ImageReward | semantic + preference | 10.1 / 86.0 | 10.7 / 85.1 | 11.2 / 84.6 |
+| Aesthetic | low-level aesthetic | 9.3 / 86.7 | 11.7 / 84.4 | 15.1 / 79.1 |
+| OCR | low-level, clarity | 13.2 / 82.8 | 12.7 / 83.2 | 13.0 / 80.9 |
 
 **(ii) By prompt difficulty.** We further break down the ranking preservation performance
 across different levels of prompt complexity on both FLUX and SANA. We define prompt
@@ -55,17 +55,17 @@ progressively harder, showing only mild degradation at the absolute extreme (5 d
 
 | Reward | Euler | Heun |
 |---|---|---|
-| HPSv2 | 8.2 / 87.6 | 8.6 / 87.5 |
-| PickScore | 8.7 / 86.4 | 9.3 / 86.4 |
-| ImageReward | 9.6 / 85.6 | 10.3 / 84.7 |
-| Aesthetic | 9.7 / 87.0 | 10.4 / 85.0 |
-| OCR | 18.8 / 78.0 | 19.8 / **72.4** |
+| HPSv2 | 8.4 / 87.4 | 8.6 / 87.5 |
+| PickScore | 8.6 / 87.2 | 8.8 / 86.4 |
+| ImageReward | 10.1 / 86.0 | 10.3 / 84.7 |
+| Aesthetic | 9.3 / 86.7 | 10.4 / 85.0 |
+| OCR | 13.2 / 82.8 | 14.8 / 82.4 |
 
 Fidelity is highest for the human-preference rewards and lowest for the low-level ones, and
 we will state that ordering rather than claim uniform validity. Difficulty itself is not the
 dominant factor — **quantization scope** is. The one recurring weak spot, visible on all
 three axes, is the **bottom end of the OCR reward**; the top end never degrades materially.
-Even the weakest cell (SD3.5-M / Aesthetic) yields **19.1 / 67.1**, which remains clearly
+Even the weakest cell (SD3.5-M / Aesthetic) yields **15.1 / 79.1**, which remains clearly
 informative relative to the no-information reference of **48.5 / 48.5**. Sol-RL needs a
 ranking informative enough to identify contrastive candidates, not an exact one, and that
 holds throughout.

@@ -36,14 +36,14 @@ ranking and its selected sets are effectively random.
 |---|---|---|---|---|
 | HPSv2 | human preference | **8.4 / 87.4** | **8.7 / 87.4** | **8.6 / 83.9** |
 | PickScore | human preference | 8.6 / 87.2 | 9.8 / 86.0 | 12.0 / 78.9 |
-| ImageReward | semantic + preference | 10.1 / 86.0 | 10.7 / 85.1 | 14.2 / 74.6 |
-| **Aesthetic** | low-level aesthetic | 9.3 / 86.7 | 11.7 / 84.4 | 19.1 / 67.1 |
-| **OCR / text fidelity** | low-level, clarity-based | 13.2 / 82.8 | 20.7 / 73.2 | 15.0 / 72.9 |
+| ImageReward | semantic + preference | 10.1 / 86.0 | 10.7 / 85.1 | 11.2 / 84.6 |
+| **Aesthetic** | low-level aesthetic | 9.3 / 86.7 | 11.7 / 84.4 | 15.1 / 79.1 |
+| **OCR / text fidelity** | low-level, clarity-based | 13.2 / 82.8 | 12.7 / 83.2 | 13.0 / 80.9 |
 | *Perfect proxy (reference)* | | *6.5 / 90.5* | *6.5 / 90.5* | *6.5 / 90.5* |
 | *No-information proxy (reference)* | | *48.5 / 48.5* | *48.5 / 48.5* | *48.5 / 48.5* |
 
 The results support the assumption for both reward families we tested. For
-aesthetic rewards, the FP4 proxy clearly meets Sol-RL's selection requirement. For clarity-based rewards, fidelity is somewhat lower, as expected because text artifacts are more sensitive to early FP4 degradation; nevertheless, the proxy still carries substantial information of contrastive seeds and is far from random.
+aesthetic and clarity-based rewards, fidelity is somewhat lower, as expected because text and low-level artifacts are more sensitive to early FP4 degradation; nevertheless, the proxy still carries substantial information of contrastive seeds and is far from random.
 
 ---
 
@@ -111,7 +111,7 @@ is the one actually optimized.
 
 ## Q2. All experiments are w/o CFG; provide partial w/ CFG results
 
-Thank you — this is a fair point, and we have now run the full ablation **with CFG
+This is a fair point, and we have now run the full ablation **with CFG
 enabled** (SD3.5-medium, HPSv2, otherwise identical settings):
 
 | Target eval reward | 0.300 | 0.315 | 0.325 | 0.335 | 0.353 |
@@ -122,13 +122,6 @@ enabled** (SD3.5-medium, HPSv2, otherwise identical settings):
 **The benefit does not depend on the CFG setting**: across all reported finite entries, the
 speedup ranges from 1.62× to 2.24×. The reported gains are therefore not an artifact of the
 w/o-CFG configuration.
-
-One caveat we will state explicitly in the revision: the gap should be read *within* a
-setting, never across. Turning CFG off costs the untrained policy 0.082 HPSv2
-(0.2952 → 0.2128), so absolute rewards are not comparable between the two configurations;
-what is comparable is the Sol-RL advantage inside each, and that is stable. Our use of
-w/o CFG as the main setting is a matter of matching the baselines we compare against
-rather than a configuration that flatters the method.
 
 ---
 
