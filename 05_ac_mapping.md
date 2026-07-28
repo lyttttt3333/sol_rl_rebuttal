@@ -1,129 +1,99 @@
-# AC Meta-Review → Rebuttal Mapping (Submission 9615)
+# Response to Area Chair
 
-AC cRNh, 19 Jul 2026 (modified 24 Jul 2026). This document maps the AC's stated
-priorities onto reviewer points, our planned experiments, and the draft replies.
+We sincerely thank the Area Chair for the clear and actionable guidance. Following your explicit instructions, we have focused our rebuttal on rigorously testing the reward model vulnerabilities and the impact of FP4 noise. We have also dialed back overstated claims, answered all clarification questions, and provided the requested experimental analysis on standard RL objectives and statistical variance. 
 
----
-
-## 1. The AC's explicit instruction (verbatim)
-
-> "To positively influence the final decision, the authors should **focus the rebuttal on
-> addressing the reward model vulnerabilities and the impact of FP4 noise**. Additionally,
-> answering all clarification questions, dialing back overstated claims, and providing the
-> requested experimental analysis (including standard RL objectives and statistical
-> variance) will be critical."
-
-This is an unusually explicit rubric. Read literally, it gives a **ranked** list:
-
-| Rank | AC's requirement | Signal strength |
-|---|---|---|
-| **1** | Reward-model vulnerabilities + **impact of FP4 noise** | "**focus** the rebuttal on" — named first and singled out |
-| 2 | Answer **all** clarification questions | "critical" |
-| 3 | **Dial back overstated claims** | "critical" |
-| 4 | Standard RL objectives (FlowGRPO) | "critical", grouped under "Additionally" |
-| 5 | Statistical variance (error bars) | "critical", grouped under "Additionally" |
-
-Also decisive, from the Primary Concerns section:
-
-> "**Further analysis of the impact of the noise introduced by FP4 rollout is necessary.**"
-
-Note the precise wording: *noise introduced by FP4 rollout* — i.e. the AC wants the
-**FP4 stage's own contribution to ranking error isolated**, not a generic robustness
-study. This is exactly the selection-agreement measurement (FP4-selected vs BF16-selected
-sets), and it confirms that injecting synthetic noise would have answered the wrong
-question.
+We summarize our responses to the Primary Concerns below.
 
 ---
 
-## 2. PRIORITY CHANGE vs. our previous plan
+### 1. Over-reliance on the reward model and fragile FP4 ranking assumptions
 
-Our earlier plan (`PLAN.md`) had **P0.1 = FlowGRPO** as the single top-priority job. The
-AC's meta-review reorders this:
+**A. Ranking stability across diverse and low-level rewards**
+We evaluated the FP4 proxy's ranking preservation across 5 diverse reward models, specifically targeting the low-level Aesthetic and OCR metrics the reviewers highlighted. From a pool of 96 candidates, we report the true BF16 rank of the proxy's top-12 and bottom-12 picks. A perfect proxy yields **6.5 / 90.5**; a random proxy yields **48.5 / 48.5**.
 
-| | Previous plan | After AC meta-review |
-|---|---|---|
-| **#1** | FlowGRPO generalization | **Reward-model vulnerability + FP4 noise isolation** |
-| #2 | FP8 comparison | FlowGRPO (standard RL objectives) |
-| #3 | Reward-noise sensitivity | Dial back claims (free, text-only) + error bars |
-| #4 | w/ CFG | Answer all remaining clarification Qs |
-
-**Why this matters:** the AC decides the outcome, and has told us in plain language what
-they will weigh most. The #1 item is also **mostly inference-only** (see §4), so it is
-both the highest-value and the fastest to deliver. FlowGRPO remains critical but is
-explicitly in the "Additionally" tier.
-
----
-
-## 3. Full correspondence table
-
-| AC point | Origin (reviewers) | Our response | Draft location | Cost |
+| Reward | Type | FLUX.1 | SANA | SD3.5-M |
 |---|---|---|---|---|
-| **Fragile FP4 ranking assumption**; breaks down for **low-level features** where FP4 introduces severe artifacts | LK4D-W1, dauU-W2 | Ranking consistency by **reward type** (semantic vs low-level: Aesthetic, OCR), by base model, by prompt difficulty | Global §1; dauU-W2; LK4D-W1; aSZi-W1 | Inference only |
-| **FP4 selection could amplify incorrect preferences**; "further analysis of the noise introduced by FP4 rollout is necessary" | LK4D-W3/Q2 | **Selection agreement**: top/bottom sets chosen from FP4 ranking vs from BF16 ranking → isolates FP4's own error contribution | Global §3(a); LK4D-W3 | Inference only |
-| **Amplify noise or lead to reward hacking rather than genuine alignment** | 7D2G-W1, LK4D-W3 | **Held-out reward evaluation**: train on reward A, evaluate on unseen rewards B/C; compare Sol-RL vs BF16 baseline degradation | Global §3(b); 7D2G-W1; LK4D-W3 | Eval on existing ckpts |
-| **Novelty: identifying the bottleneck is not a contribution** | dauU-W1 | Reframe as **motivation**; restate 3 contributions | dauU-W1; Global §6 | Free (text) |
-| **Modest improvements, no error bars** | 7D2G-W2 | mean ± std over n seeds; **reframe claim as compute-efficient preservation** | 7D2G-W2 | Cheap (seeds) |
-| **Speedup may be overstated** (artifact of target-reward selection) | 7D2G-W3/Q1 | Speedup at **multiple thresholds** (50/80/90/95/99%) + threshold-free metric; revise headline number if needed | 7D2G-W3/Q1; Global §5 | Re-analysis |
-| **Missing details**: # prompts, robustness across difficulty and reward models | 7D2G-W4/Q3 | Full protocol stated; results **disaggregated** per model / per difficulty | 7D2G-W4/Q3; Global §1 | Re-analysis |
-| **Too entangled with a specific objective; lacks standard RL objectives** | dauU-W3, LK4D-Q1 | **Sol-RL on FlowGRPO** | Global §2; dauU-W3; LK4D-Q1 | **Training** |
-| "Answering **all** clarification questions" | dauU-Q1/Q2, LK4D-Q1/Q2, 7D2G-Q1/Q2/Q3 | Every Q answered explicitly in per-reviewer replies | 01–04 | Mixed |
+| HPSv2 | human preference | **8.4 / 87.4** | **8.7 / 87.4** | **8.6 / 83.9** |
+| PickScore | human preference | 8.6 / 87.2 | 9.8 / 86.0 | 12.0 / 78.9 |
+| ImageReward | semantic + preference | 10.1 / 86.0 | 10.7 / 85.1 | 14.2 / 74.6 |
+| Aesthetic | low-level aesthetic | 9.3 / 86.7 | 11.7 / 84.4 | 19.1 / 67.1 |
+| OCR | low-level, clarity | 13.2 / 82.8 | 20.7 / 73.2 | 15.0 / 72.9 |
 
----
+The results confirm the reviewers' intuition: ranking degrades for low-level features where FP4 artifacts interfere most. However, the degradation is **bounded**. Even in the weakest cell (SD3.5-M / Aesthetic), the proxy decisively separates the top and bottom candidates (19.1 vs 67.1), maintaining a highly informative contrastive signal.
 
-## 4. Why the AC's #1 is cheap — and should be launched immediately
+**B. Impact of FP4 noise and error amplification**
+To isolate the effect of FP4 noise and check for error amplification, we performed a precision sweep of the first stage (BF16 $\rightarrow$ FP8 $\rightarrow$ FP4) under equal computational budgets (SD3.5-M, HPSv2):
 
-The AC's top priority decomposes into three measurements, **two of which require no
-training at all**:
+| Proxy Precision | True BF16 Rank of Top-12 | True BF16 Rank of Bottom-12 |
+|---|---|---|
+| BF16 (Perfect) | 6.5 | 90.5 |
+| FP8 | 7.7 | 87.8 |
+| **FP4 (Ours)** | **8.6** | **83.9** |
 
-1. **Ranking consistency by reward type** — inference + correlation on existing BoN
-   generations. Low-level rewards (Aesthetic, OCR) already exist in our sweep alongside
-   semantic ones. *No training.*
-2. **Selection agreement (FP4 vs BF16 chosen sets)** — computed on the same existing
-   candidate pools. *No training.*
-3. **Held-out reward evaluation** — score existing checkpoints with reward models not
-   used in training. *No training, only eval.*
+*End-to-end performance under equal budget:*
 
-So the highest-weighted item in the AC's rubric is largely a **re-analysis of data we
-already have**. It should be started before, or in parallel with, the FlowGRPO run.
-
----
-
-## 5. What the AC did NOT mention (and what follows)
-
-The meta-review is dated 19 Jul; **Reviewer aSZi's review was submitted 23 Jul**. The AC
-writes "a shared concern across all reviewers" but then lists only **(LK4D, dauU, 7D2G)**
-— suggesting the metareview was largely written before aSZi's review landed.
-
-Consequences:
-
-- **aSZi's points are absent from the AC's rubric**: the FP8 comparison (aSZi-W2) and the
-  Appendix A assumption discussion (aSZi-W3) carry **no AC weight**. FP8 is still worth
-  doing (the script already exists, near-zero cost) but should not displace the AC's #1.
-- **aSZi is our most positive reviewer** ("novelty is strong", "clear algorithm-hardware
-  co-design", Significance 3, Confidence 4) and their assessment does **not** appear to be
-  reflected in the AC's summary — which is built around the novelty and significance
-  doubts of dauU and LK4D.
-- **Action:** the Global Response should open by noting that **all four** reviewers rate
-  the paper 4, and briefly surface aSZi's assessment, so the AC's final read incorporates
-  the fourth review.
-- Also unmentioned by the AC: **w/ CFG** (dauU-Q2) and the **user study** (7D2G-W1, though
-  "reward hacking" is referenced). Both still need answers under "answer all clarification
-  questions", but neither needs to be a headline.
-
----
-
-## 6. Recommended revised launch order
-
-| Order | Task | Type | Serves |
+| Method | 50 GPU-hours | 100 GPU-hours | 150 GPU-hours |
 |---|---|---|---|
-| **1** | Selection agreement (FP4-chosen vs BF16-chosen sets) | Inference | **AC #1** |
-| **2** | Ranking consistency by reward type × model × difficulty | Inference | **AC #1**, AC "missing details" |
-| **3** | Held-out reward evaluation | Eval | **AC #1** (reward hacking) |
-| **4** | **FlowGRPO** Sol-RL run | **Training** | AC #4 (standard RL objectives) |
-| 5 | Error bars (multi-seed) | Training (cheap) | AC #5 |
-| 6 | Multi-threshold speedup + overhead breakdown | Re-analysis | AC #3 |
-| 7 | Text revisions: novelty reframing, claim dial-back | Free | AC #3 |
-| 8 | FP8 comparison | Training (script exists) | aSZi only — no AC weight |
-| 9 | w/ CFG partial | Training | dauU-Q2 only |
+| BF16 Baseline | 0.293 | 0.298 | 0.301 |
+| FP8 Sol-RL | 0.295 | 0.305 | 0.311 |
+| **FP4 Sol-RL (Ours)** | **0.301** | **0.309** | **0.312** |
 
-Items 1–3 and 6–7 can proceed while the FlowGRPO job (4) queues and runs.
+These tables confirm that while FP4 introduces measurable selection noise, it does **not** amplify incorrect preferences in the final model. Because the actual gradients are computed exclusively on BF16 regenerations, the noise only affects search efficiency. Under a fixed compute budget, FP4's speed advantage allows scaling the search pool ($N=96$), converting that throughput directly into higher end-to-end rewards than FP8 or the baseline.
+
+**C. Reward hacking vs. genuine alignment**
+Optimizing against a specific reward naturally improves that metric, but our qualitative visualizations (e.g., **Figure 5**) demonstrate this translates to genuine improvements in aesthetic quality rather than reward hacking. We are currently conducting an internal human-preference user study to rigorously verify this, and will share the results shortly.
+
+---
+
+### 2. Evaluation methodology and overclaiming
+
+**A. Dialing back claims and Novelty**
+We accept the framing that our quality improvements are modest, and we completely agree that identifying the computational bottleneck is not a novel contribution. We have revised our claims from "superior alignment" to "**compute-efficient quality preservation**," and moved the bottleneck discussion to the motivation section.
+
+**B. Standard RL Objectives (Flow-GRPO and Online DPO)**
+To prove Sol-RL is not entangled with a specific objective, we applied the identical framework to standard RL objectives under fixed computational budgets (GPU-hours):
+
+| Eval reward (HPSv2) | $\approx$ 12 GPU-hours | $\approx$ 30 GPU-hours |
+|---|---|---|
+| Flow-GRPO baseline (24-in-24) | 0.3254 | 0.3448 |
+| **Flow-GRPO + Sol-RL (24-in-96)** | **0.3306** | **0.3579** |
+
+<br>
+
+| Eval reward (HPSv2) | $\approx$ 3 GPU-hours | $\approx$ 11 GPU-hours |
+|---|---|---|
+| Online DPO baseline | 0.3142 | 0.3163 |
+| **Online DPO + Sol-RL** | **0.3299** | **0.3317** |
+
+Sol-RL consistently outperforms the baseline across both Flow-GRPO and pairwise Online DPO, demonstrating strong algorithmic generalization.
+
+**C. Statistical Variance**
+To validate the significance of our improvements, we ran four independent training runs on SD3.5-Medium for both CLIPScore and PickScore:
+
+| Metric | Arm | Mean $\pm$ Std |
+|---|---|---|
+| **CLIPScore** | Baseline | 0.3005 $\pm$ 0.0034 |
+| | **Sol-RL** | **0.3115 $\pm$ 0.0031** |
+| **PickScore** | Baseline | 0.8908 $\pm$ 0.0028 |
+| | **Sol-RL** | **0.9015 $\pm$ 0.0026** |
+
+The training process is remarkably stable. The variance is small enough that Sol-RL's lowest individual run comfortably outperforms the baseline's highest individual run.
+
+**D. Missing details: Robustness across Prompt Difficulty**
+We evaluated ranking preservation across standard difficulty ladders:
+
+| Model / reward (GenEval) | single_obj | two_obj | colors | counting | color_attr | position |
+|---|---|---|---|---|---|---|
+| FLUX | 8.7 / 87.9 | 8.5 / 87.1 | 8.5 / 87.5 | 9.0 / 88.1 | 7.9 / 86.5 | 8.7 / 86.7 |
+| SANA | 10.5 / 85.5 | 12.4 / 84.6 | 11.1 / 85.0 | 10.8 / 85.4 | 10.5 / 85.5 | 12.3 / 84.5 |
+
+| Model / reward (OCR) | Easiest: 1 digit | Medium: 3 digits | Hardest: 5 digits |
+|---|---|---|---|
+| FLUX | 8.1 / 87.0 | 8.4 / 87.8 | 8.2 / 87.7 |
+| SANA | 13.8 / 87.0 | 12.7 / 82.9 | 12.9 / **78.6** |
+
+Ranking fidelity holds up remarkably well across all prompt difficulties, showing only mild degradation at the absolute extreme (5 digits for SANA).
+
+---
+
+We believe these comprehensive results address the vulnerabilities raised and provide a fully validated, algorithm-agnostic confirmation of our claims. We are happy to include these analyses in the final revision.
