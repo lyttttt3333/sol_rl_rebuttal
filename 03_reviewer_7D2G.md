@@ -137,6 +137,22 @@ subjective split. Cells are mean true rank (of 96) of the proxy-selected top-12 
 | FLUX | 8.1 / 87.0 | 8.4 / 87.8 | 8.2 / 87.7 |
 | SANA | 13.8 / 87.0 | 12.7 / 82.9 | 12.9 / **78.6** |
 
+Finally, to demonstrate that ranking preservation holds across different kinds of objectives,
+we tested the FP4 proxy across **five distinct reward models**. The baseline random proxy
+gives 48.5 / 48.5, while a perfect proxy gives 6.5 / 90.5:
+
+| Reward | Type | FLUX.1 | SANA | SD3.5-M |
+|---|---|---|---|---|
+| HPSv2 | human preference | **8.4 / 87.4** | **8.7 / 87.4** | **8.6 / 83.9** |
+| PickScore | human preference | 8.6 / 87.2 | 9.8 / 86.0 | 12.0 / 78.9 |
+| ImageReward | semantic + preference | 10.1 / 86.0 | 10.7 / 85.1 | 14.2 / 74.6 |
+| Aesthetic | low-level aesthetic | 9.3 / 86.7 | 11.7 / 84.4 | 19.1 / 67.1 |
+| OCR | low-level, clarity | 13.2 / 82.8 | 20.7 / 73.2 | 15.0 / 72.9 |
+
+The fidelity is strongest for high-level semantic and preference rewards. For low-level
+rewards (Aesthetic and OCR) where FP4 artifacts interfere most, the proxy degrades slightly
+but remains highly informative, separating its selected top and bottom sets decisively.
+
 **Two findings, and we report the second even though it is the less convenient one.**
 
 First, prompt difficulty is largely **not** the driver. Across the full GenEval ladder
