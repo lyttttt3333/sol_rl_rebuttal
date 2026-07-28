@@ -32,11 +32,11 @@ information gives **48.5 / 48.5**.
 
 | Reward | Type | FLUX.1 | SANA | SD3.5-M |
 |---|---|---|---|---|
-| HPSv2 | **aesthetic** | **8.4 / 87.4** | **8.7 / 87.4** | **8.6 / 83.9** |
-| PickScore | **aesthetic** | 8.6 / 87.2 | 9.8 / 86.0 | 12.0 / 78.9 |
-| ImageReward | **aesthetic** | 10.1 / 86.0 | 10.7 / 85.1 | 14.2 / 74.6 |
-| **Aesthetic** | **aesthetic** | 9.3 / 86.7 | 11.7 / 84.4 | 19.1 / 67.1 |
-| **OCR / text fidelity** | **clarity-based** | 13.2 / 82.8 | 20.7 / 73.2 | 15.0 / 72.9 |
+| HPSv2 | human preference | **8.4 / 87.4** | **8.7 / 87.4** | **8.6 / 83.9** |
+| PickScore | human preference | 8.6 / 87.2 | 9.8 / 86.0 | 12.0 / 78.9 |
+| ImageReward | semantic + preference | 10.1 / 86.0 | 10.7 / 85.1 | 14.2 / 74.6 |
+| **Aesthetic** | low-level aesthetic | 9.3 / 86.7 | 11.7 / 84.4 | 19.1 / 67.1 |
+| **OCR / text fidelity** | low-level, clarity-based | 13.2 / 82.8 | 20.7 / 73.2 | 15.0 / 72.9 |
 | *Perfect proxy (reference)* | | *6.5 / 90.5* | *6.5 / 90.5* | *6.5 / 90.5* |
 | *No-information proxy (reference)* | | *48.5 / 48.5* | *48.5 / 48.5* | *48.5 / 48.5* |
 
@@ -117,9 +117,9 @@ enabled** (SD3.5-medium, HPSv2, otherwise identical settings):
 | Sol-RL speedup, **w/ CFG** | 1.68× | 1.84× | 1.92× | 2.24× | — |
 | Sol-RL speedup, **w/o CFG** | 1.62× | 1.67× | 1.73× | 1.86× | 2.08× |
 
-**The benefit does not depend on the CFG setting** — it is 1.4–2.3× either way and never
-falls below 1.38×. The reported gains are therefore not an artifact of the w/o-CFG
-configuration.
+**The benefit does not depend on the CFG setting**: across all reported finite entries, the
+speedup ranges from 1.62× to 2.24×. The reported gains are therefore not an artifact of the
+w/o-CFG configuration.
 
 One caveat we will state explicitly in the revision: the gap should be read *within* a
 setting, never across. Turning CFG off costs the untrained policy 0.082 HPSv2

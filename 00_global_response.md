@@ -69,15 +69,16 @@ gives **48.5 / 48.5**.
 | OCR / text fidelity | low-level, clarity-based | 13.2 / 82.8 | 20.7 / 73.2 | 15.0 / 72.9 |
 
 Protocol: **256 prompts × 96 seeds** (24,576 samples per configuration), 96 candidates per
-group, three base models, reported **disaggregated** rather than pooled.
+group, and three base models. The original paper reports the analysis **pooled** across
+models; here we additionally disaggregate it by model and prompt difficulty.
 
 **By prompt difficulty** we use two ladders with an unambiguous ordering. On GenEval (six
 categories, single-object → position) fidelity is essentially **flat**: FLUX/HPSv2 moves
 from 8.7 / 87.9 to 8.7 / 86.7 across the full range, and SANA behaves the same way. On an
-OCR digit ladder (1 / 3 / 5 digits) top-end selection is likewise stable (FLUX 13.8 → 12.9;
-SANA 21.2 → 20.3), while the **bottom** end degrades for the OCR reward specifically
-(SANA 84.0 → 66.9) — once five digits are uniformly illegible, "which is least legible"
-carries little signal. Prompt difficulty is therefore not the dominant factor;
+OCR digit ladder (1 / 3 / 5 digits), FLUX remains nearly flat (8.1 / 87.0 → 8.2 / 87.7).
+For SANA, top-end selection also remains stable (13.8 → 12.9), while bottom-end selection
+degrades moderately (87.0 → 78.6) as digit count increases. Prompt difficulty is therefore
+not the dominant factor;
 **quantization scope is**: at any fixed difficulty SD3.5-M (fully quantized) sits about
 twice as far from ideal as FLUX or SANA. Full tables are in our reply to Reviewer 7D2G.
 

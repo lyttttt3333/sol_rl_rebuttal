@@ -96,8 +96,9 @@ assumption. The full protocol, now stated in the revision:
 - **Prompts for ranking analysis:** 256, from the standard splits used by the DiffusionNFT codebase
 - **Seeds:** 96 per prompt — i.e. **24,576 samples per configuration**
 - **Candidates per group:** 96
-- **Base models:** FLUX.1, SANA, SD3.5 — reported **pooled in paper**
-- **Reward models:** HPSv2, PickScore, ImageReward, CLIPScore
+- **Base models:** FLUX.1, SANA, SD3.5 — reported **pooled in the paper** and
+  disaggregated in this response
+- **Reward models:** HPSv2, PickScore, ImageReward, Aesthetic, OCR
 - **Figure 3c and Table 8:** the same 256 prompts × 96 seeds
 
 **Per prompt difficulty.** We use two ladders with an unambiguous ordering rather than a

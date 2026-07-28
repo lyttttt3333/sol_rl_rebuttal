@@ -108,11 +108,13 @@ which does no selection at all. The effect of FP4 error is thus reduced contrast
 efficiency, not the amplification of incorrect preferences. We will make this distinction
 explicit in the revision.
 
-To verify this structurally, we are currently running an ablation that sweeps the precision
-of the first stage only (BF16 → FP8 → FP4). This monotonically increases the quantization
-noise entering the selection step while leaving everything else unchanged, allowing us to
-measure exactly how selection noise affects the final learned preferences. We will provide
-these empirical results in the coming days.
+We verify this directly by sweeping only the first-stage precision (BF16 → FP8 → FP4).
+The average true BF16 ranks of the selected top-12 / bottom-12 are **6.5 / 90.5** for BF16,
+**7.7 / 87.8** for FP8, and **8.6 / 83.9** for FP4. Thus, lower precision measurably
+perturbs selection, but the FP4 proxy remains highly informative. More importantly, under
+equal 50 / 100 / 150 GPU-hour budgets, FP4 Sol-RL obtains **0.301 / 0.309 / 0.312**, compared
+with **0.295 / 0.305 / 0.311** for FP8 Sol-RL and **0.293 / 0.298 / 0.301** for the BF16
+baseline. The added selection noise therefore does not amplify into worse final preferences.
 
 ---
 
