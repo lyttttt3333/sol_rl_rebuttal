@@ -127,18 +127,15 @@ subjective split. Cells are mean true rank (of 96) of the proxy-selected top-12 
 
 | Model / reward | single_obj | two_obj | colors | counting | color_attr | position |
 |---|---|---|---|---|---|---|
-| FLUX / HPSv2 | 8.7 / 87.9 | 8.5 / 87.1 | 8.5 / 87.5 | 9.0 / 88.1 | 7.9 / 86.5 | 8.7 / 86.7 |
-| FLUX / ImageReward | 10.6 / 87.0 | 10.6 / 86.6 | 9.6 / 86.3 | 10.3 / 87.2 | 9.4 / 85.2 | 9.9 / 84.3 |
-| SANA / Aesthetic | 10.5 / 85.5 | 12.4 / 84.6 | 11.1 / 85.0 | 10.8 / 85.4 | 10.5 / 85.5 | 12.3 / 84.5 |
-| SD3.5-M / ImageReward | 22.0 / 65.1 | 26.9 / 62.9 | 25.2 / 65.4 | 24.9 / 64.2 | 23.5 / 65.3 | 27.8 / 57.7 |
+| FLUX | 8.7 / 87.9 | 8.5 / 87.1 | 8.5 / 87.5 | 9.0 / 88.1 | 7.9 / 86.5 | 8.7 / 86.7 |
+| SANA | 10.5 / 85.5 | 12.4 / 84.6 | 11.1 / 85.0 | 10.8 / 85.4 | 10.5 / 85.5 | 12.3 / 84.5 |
 
 *OCR digit count, 1 → 3 → 5 digits (hardest):*
 
-| Model / reward | 1 digit | 3 digits | 5 digits |
+| Model / reward (OCR) | Easiest: 1 digit | Medium: 3 digits | Hardest: 5 digits |
 |---|---|---|---|
-| FLUX / HPSv2 | 8.1 / 87.0 | 8.4 / 87.8 | 8.2 / 87.7 |
-| FLUX / OCR | 13.8 / 87.0 | 12.7 / 82.9 | 12.9 / **78.6** |
-| SANA / OCR | 21.2 / 84.0 | 20.6 / **68.7** | 20.3 / **66.9** |
+| FLUX | 8.1 / 87.0 | 8.4 / 87.8 | 8.2 / 87.7 |
+| SANA | 13.8 / 87.0 | 12.7 / 82.9 | 12.9 / **78.6** |
 
 **Two findings, and we report the second even though it is the less convenient one.**
 
