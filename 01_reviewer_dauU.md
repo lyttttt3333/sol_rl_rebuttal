@@ -13,8 +13,10 @@ algorithm-agnostic (W3). We address each point below.
 
 **We fully agree, and will revise it accordingly.** 
 The computational bottleneck of RL rollouts and the degradation caused by low-precision
-training are established observations (including in the LLM quantized-RL). 
-We thank the reviewer for this correction; it sharpens what the paper actually claims.
+training are established observations, particularly in quantized RL for LLMs. However,
+quantization in diffusion RL remains comparatively underexplored. We thank the reviewer for
+this correction and will revise our framing to present the established observations as
+motivation and state our contribution more precisely.
 
 ---
 
