@@ -2,7 +2,7 @@
 
 ## SANA（四种 schedule 全部可用）
 
-| Reward | flow_euler | flow_heun | dpmpp | unipc | 极差 |
+| Reward | flow_euler | flow_heun | dpmpp | unipc | Range |
 |---|---:|---:|---:|---:|---:|
 | HPSv2 | 8.2 / 87.6 | 8.6 / 87.5 | 8.7 / 87.4 | 9.4 / 87.7 | 1.1 |
 | PickScore | 8.7 / 86.4 | 9.3 / 86.4 | 9.8 / 86.0 | 10.4 / 86.4 | 1.7 |
@@ -13,7 +13,7 @@
 
 ## FLUX（Heun 与其 pipeline 不兼容）
 
-| Reward | flow_euler | dpmpp | unipc | 极差 |
+| Reward | flow_euler | dpmpp | unipc | Range |
 |---|---:|---:|---:|---:|
 | HPSv2 | 8.4 / 87.4 | 9.2 / 87.0 | 9.2 / 86.7 | 0.7 |
 | PickScore | 8.6 / 87.2 | 9.3 / 85.7 | 9.7 / 85.5 | 1.1 |
