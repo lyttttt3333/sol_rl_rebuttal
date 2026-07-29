@@ -1,15 +1,13 @@
 # Response to the Area Chair
 
-We thank the Area Chair and all four reviewers. We note that **all four reviewers rate the
-submission 4 (Borderline accept)**, including Reviewer aSZi (submitted 23 Jul), who assessed
-the work as having "strong" novelty, "strong empirical validation", "extensive thorough
-analysis" and "clear algorithm-hardware co-design". As the meta-review references three
-reviewers, we respectfully draw attention to this fourth assessment.
-
-Following the AC's guidance we have focused this rebuttal on **reward-model vulnerability
-and the impact of FP4-induced noise**, and additionally provide standard-RL-objective
-results, statistical variance, dialed-back claims, and answers to every clarification
-question.
+We sincerely thank the Area Chair for the thoughtful summary and constructive guidance. We
+especially appreciate the recognition that our work addresses an important practical problem
+in diffusion RL, and that the reviewers found the analysis insightful and the empirical
+results promising and consistent across settings. We are equally grateful for the clearly
+identified concerns, which have helped us sharpen the scope and strengthen the evaluation.
+Below, we address each concern with additional analyses of reward-model robustness and
+FP4-induced noise, statistical variance, standard RL objectives, and clearer statements of
+our claims and experimental setup.
 
 ---
 

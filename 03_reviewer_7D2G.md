@@ -107,9 +107,11 @@ standard BF16 rollout.
 The operations the reviewer lists fall into two kinds. **Engine compilation** is a one-time
 cost of roughly **10 minutes**, amortized over a run measured in $\approx$ 150 GPU-hours of 8 GPUs. The
 **recurring** operations, including re-quantization and weight synchronization, amount to a single
-pass over the weights of a T2I model(<10B) and complete in **seconds**, negligible against the
-rollout and optimization steps they sit between. Both are inside the wall-clock we report;
-neither is subtracted out. The per-iteration breakdown will be added to the revision.
+pass over the weights of a T2I model ($\leq$10B) and take approximately **2 seconds** in our
+setting. Recompilation is not required because only the weights, rather than the computation
+graph, are updated. This overhead is negligible relative to the rollout and optimization
+steps it sits between. Both operations are included in the wall-clock time we report; neither
+is subtracted out.
 
 ---
 
