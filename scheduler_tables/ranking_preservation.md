@@ -24,10 +24,10 @@
 
 ## Ranking Preservation Across Base Models
 
-| Reward | FLUX | SANA | SD3.5-M |
-|---|---:|---:|---:|
-| HPSv2 | 8.4 / 87.4 | 8.2 / 87.6 | 11.1 / 83.6 |
-| PickScore | 8.6 / 87.2 | 8.7 / 86.4 | 12.4 / 80.7 |
-| ImageReward | 10.1 / 86.0 | 9.6 / 85.6 | 14.2 / 80.0 |
-| Aesthetic | 9.3 / 86.7 | 9.7 / 87.0 | 17.5 / 78.7 |
-| OCR | 13.2 / 82.8 | 18.8 / 78.0 | 21.8 / 68.8 |
+| Reward | Type | FLUX.1 | SANA | SD3.5 |
+|---|---|---|---|---|
+| HPSv2 | human preference | 8.4 / 87.4 | 8.7 / 87.4 | 8.6 / 83.9 |
+| PickScore | human preference | 8.6 / 87.2 | 9.8 / 86.0 | 12.0 / 78.9 |
+| ImageReward | semantic + preference | 10.1 / 86.0 | 10.7 / 85.1 | 11.2 / 84.6 |
+| Aesthetic | aesthetic | 9.3 / 86.7 | 11.7 / 84.4 | 15.1 / 79.1 |
+| OCR | clarity-based | 17.2 / 78.8 | 20.7 / 73.2 | 19.0 / 74.9 |
