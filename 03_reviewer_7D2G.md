@@ -44,9 +44,13 @@ realized alignment gain by **7.6%, 27.1%, 10.6%, and 7.2%**, respectively. The i
 is thus substantial when measured against the actual reward gained during post-training,
 rather than against the absolute final score.
 
-Our central claim remains *compute-efficient quality improvement*: Sol-RL obtains these
-larger alignment gains under the same compute budget while reaching any fixed quality
-standard substantially faster.
+Our central claim is **Diffusion-RL training acceleration**, manifested in two complementary
+ways: Sol-RL achieves superior alignment quality under the same training GPU-hour budget,
+and requires fewer GPU-hours to reach an equivalent reward standard. Practically, Sol-RL
+reaches the baseline's plateau reward **2.42×, 3.00×, and 4.64× faster** on SANA, FLUX.1,
+and SD3.5-Large, respectively. This substantially earlier entry into the high-reward regime
+translates into better alignment quality within realistic, fixed training budgets. We will
+revise the text and abstract to state this claim precisely.
 
 **Variance and Error bars.** To quantify variance, we ran four independent training runs on
 SD3.5-Medium for both CLIPScore and PickScore under the same GPU-hours. We present these preliminary measurements below:
