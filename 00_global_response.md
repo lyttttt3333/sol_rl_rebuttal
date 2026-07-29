@@ -662,7 +662,35 @@ results in the coming days.
 
 ---
 
-## 2. Dialing back overstated claims
+## 2. Standard RL objectives: Sol-RL on FlowGRPO
+
+Addressing the AC's "insufficient experimental scope" (dauU-W3, LK4D-Q1), we applied the
+identical two-stage pipeline on top of two further objectives. Setup: SD3.5-medium, HPSv2,
+512px, 10 steps, LoRA, 8×H100, held-out 2048-prompt eval.
+
+**Flow-GRPO** — under a fixed computational budget (GPU-hours), Sol-RL consistently beats the
+baseline:
+
+| Eval reward (HPSv2) | ≈ 12 GPU-hours | ≈ 30 GPU-hours |
+|---|---|---|
+| Flow-GRPO baseline (24-in-24) | 0.3254 | 0.3448 |
+| **Flow-GRPO + Sol-RL (24-in-96)** | **0.3306** | **0.3579** |
+
+**Online DPO** — a preference-based rather than group-relative objective. Under the same
+GPU-hour budget, varying only the candidate pool size from which the preference pair is drawn:
+
+| Eval reward (HPSv2) | ≈ 3 GPU-hours | ≈ 11 GPU-hours |
+|---|---|---|
+| Online DPO baseline | 0.3142 | 0.3163 |
+| **Online DPO + Sol-RL** | **0.3299** | **0.3317** |
+
+The benefit therefore holds across **DiffusionNFT, Flow-GRPO and DPO** — two group-relative
+objectives and one pairwise-preference objective. Sol-RL is an objective-agnostic
+rollout-scaling framework, not an artifact of DiffusionNFT.
+
+---
+
+## 3. Dialing back overstated claims
 
 **Novelty (dauU-W1).** We agree that the rollout bottleneck and the degradation caused by
 low-precision training are established observations, particularly in quantized RL for LLMs.
@@ -695,7 +723,7 @@ one-time cost of roughly 10 minutes, amortized over a run measured in $\approx$ 
 
 ---
 
-## 3. Statistical validation
+## 4. Statistical validation
 
 To quantify variance and validate the significance of our improvements, we ran four
 independent training runs on SD3.5-Medium for both CLIPScore and PickScore:
@@ -713,33 +741,15 @@ cases.
 
 ---
 
-## 4. Standard RL objectives: Sol-RL on FlowGRPO
+## 5. Remaining clarifications
 
-Addressing the AC's "insufficient experimental scope" (dauU-W3, LK4D-Q1), we applied the
-identical two-stage pipeline on top of two further objectives. Setup: SD3.5-medium, HPSv2,
-512px, 10 steps, LoRA, 8×H100, held-out 2048-prompt eval.
+- **w/ CFG (dauU-Q2):** The ablation with CFG enabled is now included in the revision. The relative advantage of Sol-RL is preserved because CFG scales both stages proportionally.
+- **Exact loss (dauU-Q1):** the DiffusionNFT objective as implemented is now given in full.
+- **GRPO vs DPO/PPO (LK4D-Q1):** Sol-RL requires only group-based candidate sampling and
+  relative reward comparison; DPO-style pair mining is a natural fit.
+- **Appendix A assumptions (aSZi-W3):** ranking is invariant to monotone transformations of
+  the reward — weaker than the bound assumes — so violations degrade the constant rather
+  than the conclusion.
 
-**Flow-GRPO** — under a fixed computational budget (GPU-hours), Sol-RL consistently beats the
-baseline:
-
-| Eval reward (HPSv2) | ≈ 12 GPU-hours | ≈ 30 GPU-hours |
-|---|---|---|
-| Flow-GRPO baseline (24-in-24) | 0.3254 | 0.3448 |
-| **Flow-GRPO + Sol-RL (24-in-96)** | **0.3306** | **0.3579** |
-
-**Online DPO** — a preference-based rather than group-relative objective. Under the same
-GPU-hour budget, varying only the candidate pool size from which the preference pair is drawn:
-
-| Eval reward (HPSv2) | ≈ 3 GPU-hours | ≈ 11 GPU-hours |
-|---|---|---|
-| Online DPO baseline | 0.3142 | 0.3163 |
-| **Online DPO + Sol-RL** | **0.3299** | **0.3317** |
-
-The benefit therefore holds across **DiffusionNFT, Flow-GRPO and DPO** — two group-relative
-objectives and one pairwise-preference objective. Sol-RL is an objective-agnostic
-rollout-scaling framework, not an artifact of DiffusionNFT.
-
-
-
-
-
+Details for each are in our individual replies. We thank the AC and reviewers again, and are
+happy to run further experiments during the discussion period.
