@@ -731,57 +731,6 @@ policy-optimization objective. Setup: SD3.5, HPSv2, 512px, LoRA, 8×H100, and a 
 These results show that the benefit is not specific to DiffusionNFT or to group-relative
 objectives.
 
----
-
-## 3. Additional clarification questions
-
-### 3.1 Why select only the top and bottom candidates?
-
-Holding the 96-candidate pool fixed, we compare using only the 24 extremes, adding 24
-mid-ranked candidates, and keeping all candidates:
-
-| Kept from the 96-pool | Eval reward | Gain over untrained (0.758) |
-|---|---|---|
-| **24 (ours)** | **0.90762** | **0.150** |
-| 48 | 0.90154 | 0.144 |
-| 96 | 0.89276 | 0.135 |
-
-Mid-ranked candidates are not uninformative, but their near-tied rewards provide a noisier
-positive/negative assignment. Under a fixed training budget, the extremes provide the most
-robust contrastive signal.
-
-### 3.2 Results with classifier-free guidance
-
-| Target eval reward | 0.300 | 0.315 | 0.325 | 0.335 | 0.353 |
-|---|---|---|---|---|---|
-| Sol-RL speedup, **w/ CFG** | 1.68× | 1.84× | 1.92× | 2.24× | — |
-| Sol-RL speedup, **w/o CFG** | 1.62× | 1.67× | 1.73× | 1.86× | 2.08× |
-
-Across all finite entries, the speedup ranges from **1.62× to 2.24×**. The dash indicates
-that the baseline did not reach the specified reward within the training budget.
-
-### 3.3 Exact optimization objective
-
-We optimize the DiffusionNFT objective:
-
-$$\mathcal{L}(\theta)=\mathbb{E}\Big[r\|v^{\theta+}-v\|^2+
-(1-r)\|v^{\theta-}-v\|^2\Big],$$
-
-$$v^{\theta\pm}=(1\mp\beta)v^{\mathrm{old}}\pm\beta v^\theta,$$
-
-$$r=0.5+0.5\,\mathrm{clip}\!\left[
-\frac{r^{\mathrm{raw}}-\overline{r^{\mathrm{raw}}}}{Z_c},-1,1\right],$$
-
-where $\beta$ is the interpolation coefficient and $Z_c$ is the reward normalizer. We will
-add the complete formulation and notation to the revision.
-
-### 3.4 System overheads
-
-All speedups are end-to-end wall-clock measurements that include re-quantization, weight
-synchronization, and engine updates. Engine compilation is a one-time cost of approximately
-10 minutes, amortized over roughly 150 GPU-hours. Recurring updates require only a weight
-pass; because the graph is unchanged, recompilation is unnecessary.
-
 We thank the Area Chair again for the clear guidance. These additional experiments directly
 address the stated priorities and will be incorporated into the revision.
 
