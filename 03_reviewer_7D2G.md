@@ -1,9 +1,17 @@
 # Response to Reviewer 7D2G
 
 
-We thank the reviewer for a detailed and constructive review, and for identifying the
-BF16 24-in-96 comparison and the ranking-consistency analysis as the strongest evidence.
-Every point raised is directly measurable, and we address each below.
+We sincerely thank the reviewer for the detailed and constructive assessment. We especially
+appreciate the recognition that our work addresses an important practical bottleneck in
+diffusion RL, and that the two-stage design combining FP4 ranking with BF16 regeneration is
+simple and well motivated. We are also grateful that the reviewer identifies the BF16
+24-in-96 comparison as our strongest experimental result, showing that Sol-RL largely
+preserves the quality of naive BF16 large-rollout scaling while reducing rollout and
+end-to-end iteration time. We further appreciate the positive assessment of the NVFP4
+exploration analysis, which directly supports the ranking-preservation assumption underlying
+our method, as well as the recognition that validation across multiple base models and reward
+metrics strengthens the evidence for its efficiency and effectiveness. We address each
+concern below.
 
 ---
 

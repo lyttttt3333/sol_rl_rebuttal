@@ -1,4 +1,4 @@
-# Global Response (to the Area Chair and all Reviewers)
+# Response to the Area Chair
 
 We thank the Area Chair and all four reviewers. We note that **all four reviewers rate the
 submission 4 (Borderline accept)**, including Reviewer aSZi (submitted 23 Jul), who assessed
