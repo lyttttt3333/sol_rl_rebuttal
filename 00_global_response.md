@@ -139,11 +139,15 @@ rollout-scaling framework, not an artifact of DiffusionNFT.
 
 ## 3. Dialing back overstated claims
 
-**Novelty (dauU-W1).** Identifying the rollout bottleneck and low-precision degradation is
-prior knowledge; it is **moved to the motivation**. Our contributions are restated as:
-(i) the finding that low-precision rollouts preserve reward *ranking* even when sample
-fidelity degrades; (ii) the rank-then-regenerate design exploiting this; (iii) the system
-realization, validated across models, objectives and reward families.
+**Novelty (dauU-W1).** We agree that the rollout bottleneck and the degradation caused by
+low-precision training are established observations, particularly in quantized RL for LLMs.
+However, quantized rollouts in diffusion RL—and specifically whether aggressive
+low-precision generation can preserve relative reward rankings despite degraded sample
+fidelity—remain underexplored. Our intended contribution is therefore not the identification
+of the bottleneck itself, but the ranking-preservation finding, the rank-then-regenerate
+framework that exploits it, and its system realization across models, objectives, and reward
+families. We thank the reviewer for prompting us to sharpen this distinction and will revise
+the novelty claim accordingly.
 
 **Alignment quality (7D2G-W2).** We revise the claim from superior alignment to
 **compute-efficient quality preservation** — matching the BF16 large-rollout pipeline at
