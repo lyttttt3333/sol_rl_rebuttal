@@ -32,9 +32,21 @@ study in the coming days.
 
 ## W2. Improvements are modest and no error bars are reported
 
-**We accept this framing, and we think it is the correct one for our paper.** Our central
-claim is *compute-efficient quality preservation* -- reaching equal quality standard at substantially lower cost -- rather than uniformly superior alignment quality. We
-will revise the claims in the text and abstract to state this precisely.
+We agree that statistical validation is necessary, but would like to clarify the
+characterization of the improvements as modest. Comparing only the final raw rewards
+understates the gain because each metric has a substantial nonzero starting value. The
+relevant quantity is the alignment improvement from the shared base model,
+$\Delta R=R_{\mathrm{final}}-R_{\mathrm{base}}$. Under the identical GPU-hour budget in
+Table 1, DiffusionNFT versus Sol-RL achieves $\Delta R$ of **1.2157 vs. 1.3086** on
+ImageReward, **0.0361 vs. 0.0459** on CLIPScore, **0.0756 vs. 0.0836** on PickScore, and
+**0.1047 vs. 0.1122** on HPSv2. Relative to DiffusionNFT, Sol-RL therefore increases the
+realized alignment gain by **7.6%, 27.1%, 10.6%, and 7.2%**, respectively. The improvement
+is thus substantial when measured against the actual reward gained during post-training,
+rather than against the absolute final score.
+
+Our central claim remains *compute-efficient quality improvement*: Sol-RL obtains these
+larger alignment gains under the same compute budget while reaching any fixed quality
+standard substantially faster.
 
 **Variance and Error bars.** To quantify variance, we ran four independent training runs on
 SD3.5-Medium for both CLIPScore and PickScore under the same GPU-hours. We present these preliminary measurements below:
